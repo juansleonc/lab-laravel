@@ -8,13 +8,11 @@ class DatabaseSeeder extends Seeder
 {
     /**
      * Run the database seeds.
-     *
-     * @return void
      */
     public function run()
     {
         Model::unguard();
-        
+
         $this->truncateTables([
             'password_resets',
             'ticket_votes',
@@ -34,13 +32,13 @@ class DatabaseSeeder extends Seeder
     {
         $this->changeForeignKeys(false);
         foreach ($tables as $table) {
-            DB::table($table)->truncate();    
+            DB::table($table)->truncate();
         }
         $this->changeForeignKeys(true);
     }
     public function changeForeignKeys($check)
     {
-        $check = $check ? '1' : '0' ;
-        DB::statement('SET FOREIGN_KEY_CHECKS = ' . $check);
+        $check = $check ? '1' : '0';
+        DB::statement('SET FOREIGN_KEY_CHECKS = '.$check);
     }
 }
