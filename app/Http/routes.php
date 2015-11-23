@@ -31,3 +31,7 @@ Route::get('/solicitud/{id}', [
 	'as' => 'tickets.details',
 	'uses' => 'TicketsController@details'
 ]);
+Route::controllers([
+	'auth' => 'Auth\AuthController',
+	'password' => 'Auth\PasswordController',
+]);
