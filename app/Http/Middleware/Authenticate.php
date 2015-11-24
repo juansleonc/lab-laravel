@@ -44,4 +44,9 @@ class Authenticate
 
         return $next($request);
     }
+    // Method for redirect
+    public function redirectPath()
+    {
+        return '/';
+    }
 }

@@ -9,6 +9,12 @@
                 @include('tickets.partials.status', compact('ticket'))
 
             </h2>
+
+            <p class="date-t">
+                <span class="glyphicon glyphicon-time"></span>{{ $ticket->created_at->format('d/m/Y h:ia') }}
+                - {{ $ticket->author->name }}
+            </p>
+
             <h4 class="label label-info news">
                 {{ count($ticket->voters) }} votos            </h4>
 
@@ -20,13 +26,17 @@
 
               @endforeach
             </p>
-
-            <form method="POST" action="http://teachme.dev/votar/5" accept-charset="UTF-8"><input name="_token" type="hidden" value="VBIv3EWDAIQuLRW0cGwNQ4OsDKoRhnK2fAEF6UbQ">
-                <!--button type="submit" class="btn btn-primary">Votar</button-->
+             {!! Form::open(['route' => ['votes.submit', $ticket->id] , 'method' => 'POST']) !!}
                 <button type="submit" class="btn btn-primary">
                     <span class="glyphicon glyphicon-thumbs-up"></span> Votar
                 </button>
-            </form>
+            {!! Form::close() !!}
+
+            {!! Form::open(['route' => ['votes.destroy', $ticket->id], 'method' => 'DELETE']) !!}
+                <button type="submit" class="btn btn-primary">
+                    <span class="glyphicon glyphicon-thumbs-up"></span> Quitar Voto
+                </button>
+            {!! Form::close() !!}
 
             <h3>Nuevo Comentario</h3>
 
@@ -49,7 +59,7 @@
                     <p><strong>{{ $comment->user->name }}</strong></p>
                     <p>{{ $comment->comment }}</p>
                     <p class="date-t"><span class="glyphicon glyphicon-time"></span>
-                    {{ $comment->created_at->format('d/m/Y h:ia') }}</p>
+                    {{ $comment->created_at->format('d/m/Y h:ia') }} - {{ $ticket->author->name }}</p>
                 </div>
             @endforeach
         </div>

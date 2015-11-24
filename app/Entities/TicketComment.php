@@ -11,6 +11,6 @@ class TicketComment extends Entity
 
     public function user()
     {
-      return $this->belongsTo(User::getClass());
+        return $this->belongsTo(User::getClass());
     }
 }

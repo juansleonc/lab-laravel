@@ -1,12 +1,13 @@
 <?php
+
 namespace Teachme\Entities;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Entity extends Model
+class entity extends Model
 {
     public static function getClass()
     {
-      return get_class(new static);
+        return get_class(new static());
     }
 }

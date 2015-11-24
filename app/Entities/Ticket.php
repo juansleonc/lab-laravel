@@ -4,6 +4,8 @@ namespace TeachMe\Entities;
 
 class Ticket extends Entity
 {
+    protected $fillable = ['title', 'status'];
+
     public function getOpenAttribute()
     {
         return $this->status == 'open';
@@ -11,7 +13,7 @@ class Ticket extends Entity
 
     public function author()
     {
-        return $this->belongsTo(User::getClass());
+        return $this->belongsTo(User::getClass(), 'user_id');
     }
 
     public function voters()

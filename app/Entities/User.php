@@ -38,11 +38,11 @@ class User extends Entity implements AuthenticatableContract,
 
     public function tickets()
     {
-      return $this->hasMany(Ticket::getClass());
+        return $this->hasMany(Ticket::getClass());
     }
 
     public function voted()
     {
-      return $this->belongsToMany(Ticket::getClass(), 'ticket_votes');
+        return $this->belongsToMany(Ticket::getClass(), 'ticket_votes');
     }
 }
