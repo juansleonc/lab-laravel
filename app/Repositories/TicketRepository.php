@@ -4,11 +4,16 @@ namespace TeachMe\Repositories;
 
 use TeachMe\Entities\Ticket;
 
-class TicketRepository
+class TicketRepository extends BaseRepository
 {
+    public  function getModel()
+    {
+        return new Ticket();
+    }
+
     protected function selectTicketList()
     {
-        return Ticket::selectRaw(
+        return $this->newQuery()->selectRaw(
             'tickets.*,'
             . '( SELECT COUNT(*) FROM ticket_comments WHERE ticket_comments.ticket_id = tickets.id) AS num_comments , '
             . '( SELECT COUNT(*) FROM ticket_votes WHERE ticket_votes.ticket_id = tickets.id) AS num_votes'
@@ -37,14 +42,31 @@ class TicketRepository
             ->paginate();
     }
 
-    public function findOrFile($id)
-    {
-        return Ticket::with('author')->findOrFail($id);
-    }
+
 
     public function popular()
     {
-        Ticket::orderBy('created_at', 'DESC')->paginate();
+        $this->newQuery()->orderBy('created_at', 'DESC')->paginate();
+    }
+
+    public function openNew($user, $title)
+    {
+        /*
+        $ticket = $auth->user()->tickets()->create([
+            'title' => $request->get('title'),
+            'status' => 'open',
+        ]);
+
+        $ticket = new Ticket();
+        $ticket->title = $request->get('title');
+        $ticket->status = 'open';
+        $ticket->user_id = $auth->user()->id;
+        $ticket->save();
+        */
+        return $user->tickets()->create([
+            'title' => $title,
+            'status' => 'open',
+        ]);
     }
 
 
