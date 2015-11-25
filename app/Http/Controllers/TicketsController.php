@@ -6,40 +6,50 @@ use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use TeachMe\Entities\Ticket;
+use TeachMe\Repositories\TicketRepository;
 
 class TicketsController extends Controller
 {
+    /**
+     * @var TicketRepository
+     */
+    private $ticketRepository;
+
+    public function __construct(TicketRepository $ticketRepository)
+    {
+        $this->ticketRepository = $ticketRepository;
+    }
+
     public function latest()
     {
-        $tickets = Ticket::orderBy('created_at', 'DESC')->paginate();
-
-        return view('tickets.list', compact('tickets'));
-    }
-    public function popular()
-    {
-        $tickets = Ticket::orderBy('created_at', 'DESC')->paginate();
+        $tickets = $this->ticketRepository->paginateLatest();
 
         return view('tickets.list', compact('tickets'));
     }
     public function open()
     {
-        $tickets = Ticket::orderBy('created_at', 'DESC')->paginate();
+        $tickets = $this->ticketRepository->paginateOpen();
 
         return view('tickets.list', compact('tickets'));
     }
     public function closed()
     {
-        $tickets = Ticket::orderBy('created_at', 'DESC')->paginate();
+        $tickets = $this->ticketRepository->paginateClose();
 
         return view('tickets.list', compact('tickets'));
     }
     public function details($id, Guard $auth)
     {
-        $ticket = Ticket::findOrFail($id);
-
+        $ticket = $this->ticketRepository->findOrFile($id);
         $user = $auth->user();
 
         return view('tickets/details', compact('ticket', 'user'));
+    }
+    public function popular()
+    {
+        $tickets = $this->ticketRepository->popular();
+
+        return view('tickets.list', compact('tickets'));
     }
     public function create()
     {
